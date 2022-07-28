@@ -1,5 +1,11 @@
-"Rasul";
+fun returnFunction() {
+    var outside = "outside";
+    var temp = 192.168;
+    fun inner() {
+        print outside;
+    }
+    return inner;
+}
 
-192.165 193 "Abca"
-
-/ * == + = = --
+var fn = returnFunction();
+fn();
