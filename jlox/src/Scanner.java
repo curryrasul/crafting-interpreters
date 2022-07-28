@@ -87,6 +87,8 @@ class Scanner {
             case '/':
                 if (match('/')) {
                     while (peek() != '\n' && !isAtEnd()) advance();
+                } else if (match('*')) {
+                    blockComment();
                 } else {
                     addToken(TokenType.SLASH);
                 }
@@ -147,6 +149,22 @@ class Scanner {
 
         current++;
         return true;
+    }
+
+    // Block comments. Refactor later
+    private void blockComment() {
+        while (true) {
+            if (isAtEnd()) {
+                Lox.error(line, "Unclosed comment section");
+                return;
+            } else if (peek() == '\n') {
+                line++;
+            } else if (peek() == '*' && peekNext() == '/') {
+                current += 2;
+                return;
+            }
+            advance();
+        }
     }
 
     private void string() {
