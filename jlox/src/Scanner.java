@@ -151,7 +151,6 @@ class Scanner {
         return true;
     }
 
-    // Block comments. Refactor later
     private void blockComment() {
         while (true) {
             if (isAtEnd()) {
