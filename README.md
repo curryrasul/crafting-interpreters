@@ -2,5 +2,5 @@
 
 ### This is my implementation of interpreters (jlox and clox) from "Crafting Interpreters" book.
 
-* [] [jlox](./jlox)
+* [X] [jlox](./jlox)
 * [] [clox](./clox)
