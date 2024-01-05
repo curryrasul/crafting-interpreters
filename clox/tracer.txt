@@ -1,0 +1,59 @@
+(-1 + 2) * 3 - -4
+
+advance():
+    parser.prev = NULL
+    parser.current = '('
+parsePrecedence(PREC_ASSIGNMENT):
+    advance():
+        parser.prev = '('
+        parser.current = '-'
+    prefixRule = grouping
+    grouping():
+        parsePrecedence(PREC_ASSIGNMENT):
+            advance():
+                parser.prev = '-'
+                parser.current = '1'
+            prefixRule = unary
+            unary():
+                operatorType = TOKEN_MINUS
+                parsePrecedence(PREC_UNARY):
+                    advance():
+                        parser.prev = '1'
+                        parser.current = '+'
+                    prefixRule = number
+                    number():
+                        emitConstant(1)
+                emitByte(NEGATE)
+            while(PREC_ASSIGNMENT < PREC_TERM):
+                advance():
+                    parser.prev = '+'
+                    parser.current = '2'
+                infixRule = binary
+                binary():
+                    operatorType = '+'
+                    parsePrecedence(PREC_FACTOR):
+                        advance():
+                            parser.prev = '2'
+                            parser.current = ')'
+                        prefixRule = number
+                        number():
+                            emitConstant(2)
+                    emitByte(OP_ADD)
+        consume(')'):
+            parser.prev = ')'
+            parser.current = '*'
+    while(PREC_ASSIGNMENT < PREC_FACTOR):
+        advance():
+            parser.prev = '*'
+            parser.current = '3'
+        infixRule = binary
+        binary():
+            operatorType = TOKEN_STAR
+            parsePrecedence(PREC_UNARY):
+                advance():
+                    parser.prev = '3'
+                    parser.current = '-'
+                prefixRule = number
+                number():
+                    emitConstant(3)
+            emitByte(OP) 
